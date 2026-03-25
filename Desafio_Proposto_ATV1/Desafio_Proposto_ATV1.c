@@ -33,7 +33,7 @@ int main()
     // passo o delay em ms, funcao a ser rodada no callback, contexto de 
     // identificador (usamos NULL) e o endereco do timer
     // dica: CTRL+click tem uma boa documentacao
-    add_repeating_timer_ms(1000, blink_callback, NULL, &timer);
+    add_repeating_timer_ms(500, blink_callback, NULL, &timer);
 
     while (true) {
         tight_loop_contents();
