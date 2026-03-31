@@ -1,43 +1,36 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "pico/time.h" // me da acesso as funcoes de tempo do SDK
+#include "hardware/pio.h"
+#include "ws2812.pio.h"
 
-#define LED_PIN 25
+#define IS_RGBW false
+#define NUM_PIXELS 1
+#define WS2812_PIN 16
 
-// funcao chamada pelo repeating timer
-bool blink_callback(struct repeating_timer *t){
-    // variavel static retem o valor dela entre chamadas da funcao!!! (bem util)
-    // como se fosse uma variavel global que so esta funcao pode acessar 
-    // esse igual a false so funciona na criacao
-    // em outras chamadas, ele apenas pega o valor anterior que ja estava
-    static bool led_state = false; 
-    
-    led_state = !led_state;
-    gpio_put(LED_PIN, led_state);
-
-    return true;
+static inline uint32_t urgb_u32(uint8_t r, uint8_t g, uint8_t b) {
+    return ((uint32_t)(r) << 8) |
+           ((uint32_t)(g) << 16) |
+           (uint32_t)(b);
 }
 
-int main()
-{
+void put_pixel(PIO pio, int sm, uint32_t pixel_grb) {
+    pio_sm_put_blocking(pio, sm, pixel_grb << 8u);
+}
+
+int main() {
     stdio_init_all();
 
-    // inicializa gpio
-    gpio_init(LED_PIN);
-    gpio_set_dir(LED_PIN, GPIO_OUT);
+    PIO pio = pio0;
+    int sm = 0;
 
-    // crio um timer de repeticao
-    struct repeating_timer timer;
-
-    // cria uma funcao repetitiva em cima do timer criado
-    // passo o delay em ms, funcao a ser rodada no callback, contexto de 
-    // identificador (usamos NULL) e o endereco do timer
-    // dica: CTRL+click tem uma boa documentacao
-    add_repeating_timer_ms(500, blink_callback, NULL, &timer);
+    uint offset = pio_add_program(pio, &ws2812_program);
+    ws2812_program_init(pio, sm, offset, WS2812_PIN, 800000, IS_RGBW);
 
     while (true) {
-        tight_loop_contents();
+        put_pixel(pio, sm, urgb_u32(255, 0, 0)); // vermelho
+        sleep_ms(500);
+
+        put_pixel(pio, sm, urgb_u32(0, 0, 0));   // apagado
+        sleep_ms(500);
     }
-    
-    return 0;
 }
