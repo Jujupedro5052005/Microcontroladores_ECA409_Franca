@@ -4,6 +4,7 @@
             "name": "Pico",
             "includePath": [
                 "${workspaceFolder}/**",
+                "${workspaceFolder}/build/generated",
                 "${userHome}/.pico-sdk/sdk/2.2.0/**"
             ],
             "forcedInclude": [
@@ -15,7 +16,7 @@
             "compileCommands": "${workspaceFolder}/build/compile_commands.json",
             "cStandard": "c17",
             "cppStandard": "c++14",
-            "intelliSenseMode": "linux-gcc-arm"
+            "intelliSenseMode": "windows-gcc-arm"
         }
     ],
     "version": 4

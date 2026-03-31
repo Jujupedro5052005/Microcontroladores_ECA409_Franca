@@ -35,7 +35,11 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(Desafio_Proposto_ATV1 Desafio_Proposto_ATV1.c )
+add_executable(Desafio_Proposto_ATV1
+    Desafio_Proposto_ATV1.c)
+
+pico_generate_pio_header(Desafio_Proposto_ATV1
+    ${CMAKE_CURRENT_LIST_DIR}/ws2812.pio)
 
 pico_set_program_name(Desafio_Proposto_ATV1 "Desafio_Proposto_ATV1")
 pico_set_program_version(Desafio_Proposto_ATV1 "0.1")
@@ -46,7 +50,8 @@ pico_enable_stdio_usb(Desafio_Proposto_ATV1 1)
 
 # Add the standard library to the build
 target_link_libraries(Desafio_Proposto_ATV1
-        pico_stdlib)
+        pico_stdlib
+        hardware_pio)
 
 # Add the standard include files to the build
 target_include_directories(Desafio_Proposto_ATV1 PRIVATE

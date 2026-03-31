@@ -27,7 +27,7 @@ int main() {
     ws2812_program_init(pio, sm, offset, WS2812_PIN, 800000, IS_RGBW);
 
     while (true) {
-        put_pixel(pio, sm, urgb_u32(255, 0, 0)); // vermelho
+        put_pixel(pio, sm, urgb_u32(0, 255, 0)); // vermelho
         sleep_ms(500);
 
         put_pixel(pio, sm, urgb_u32(0, 0, 0));   // apagado
