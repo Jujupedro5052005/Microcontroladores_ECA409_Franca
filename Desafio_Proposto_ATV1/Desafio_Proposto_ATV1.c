@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "pico/time.h" // me da acesso as funcoes de tempo do SDK
+//erichao seu lindo
 
 #define LED_PIN 25
 
